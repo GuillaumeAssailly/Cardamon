@@ -1,0 +1,352 @@
+﻿@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider authStateProvider
+@inject PokémonService pokémonService
+@using Front.Entities;
+@using System.Text;
+
+
+<div class="SearchGrid">
+    <div class="Formedex">
+
+        <div class="form-horizontal">
+            <label class="form-label">
+                <h4>Nom de la carte</h4>
+                <InputText class="form-control" @bind-Value="Name" @oninput="SetName" placeholder="Pikachu" />
+            </label>
+            
+            <label class="form-label">
+                <h4>Type de carte</h4>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="pkmn-logo @(pokémonService.GetCategoryClass(pokémonService.GetCategoryText(Category)))"></span>@pokémonService.GetCategoryText(Category)
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (var cat in pokémonService.GetCategories())
+                        {
+                            <li><button class="dropdown-item" @onclick="async () => await SetCategory(pokémonService.GetCategoryValue(cat))"><span class="pkmn-logo @pokémonService.GetCategoryClass(cat)"></span>@cat</button></li>
+                        }
+                    </ul>
+                </div>
+            </label>
+            
+            <label class="form-label">
+                <h4>Type 1</h4>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="energy @(Type1 is not null ? pokémonService.GetTypeClass(Type1): "")"></span>@Type1
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (var type in pokémonService.GetTypes())
+                        {
+                            <li><button class="dropdown-item" @onclick="async () => await SetType1(type)"><span class="energy @pokémonService.GetTypeClass(type)"></span>@type</button></li>
+                        }
+                    </ul>
+                </div>
+            </label>
+            
+            <label class="form-label">
+                <h4>Type 2</h4>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="energy @(Type2 is not null ? pokémonService.GetTypeClass(Type2): "")"></span>@Type2
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (var type in pokémonService.GetTypes())
+                        {
+                            <li><button class="dropdown-item" @onclick="async () => await SetType2(type)"><span class="energy @pokémonService.GetTypeClass(type)"></span>@type</button></li>
+                        }
+                    </ul>
+                </div>
+            </label>
+
+            <label class="form-label">
+                <h4>Set</h4>
+                <input class="form-control" list="datalistOptions" @oninput="SetSet" placeholder="Set de cartes...">
+                <datalist id="datalistOptions">
+
+                    <option value="151">151</option>
+                    <option value="Alliance Infaillible">Alliance Infaillible</option>
+                    <option value="Aquapolis">Aquapolis</option>
+                    <option value="Astres Radieux">Astres Radieux</option>
+                    <option value="Aube Majestueuse">Aube Majestueuse</option>
+                    <option value="Bienvenue à Kalos">Bienvenue à Kalos</option>
+                    <option value="Carte Alternative A Jaune">Carte Alternative A Jaune</option>
+                    <option value="Ciel Rugissant">Ciel Rugissant</option>
+                    <option value="Clash des Rebelles">Clash des Rebelles</option>
+                    <option value="Coffre des Dragons">Coffre des Dragons</option>
+                    <option value="Célébrations">Célébrations</option>
+                    <option value="Destinées Futures">Destinées Futures</option>
+                    <option value="Destinées Occultes">Destinées Occultes</option>
+                    <option value="Diamant & Perle">Diamant & Perle</option>
+                    <option value="Double Danger">Double Danger</option>
+                    <option value="Dragons Éxaltés">Dragons Éxaltés</option>
+                    <option value="Duels au Sommets">Duels au Sommets</option>
+                    <option value="Duo de Choc">Duo de Choc</option>
+                    <option value="Déchaînement">Déchaînement</option>
+                    <option value="Déstinées Radieuses">Déstinées Radieuses</option>
+                    <option value="Détective Pikachu">Détective Pikachu</option>
+                    <option value="Écarlate et Violet">Écarlate et Violet</option>
+                    <option value="Éclipse Cosmique">Éclipse Cosmique</option>
+                    <option value="Épée et Bouclier">Épée et Bouclier</option>
+                    <option value="Étincelles">Étincelles</option>
+                    <option value="Éveil des Légendes">Éveil des Légendes</option>
+                    <option value="Évolution Céleste">Évolution Céleste</option>
+                    <option value="Évolutions à Paldea">Évolutions à Paldea</option>
+                    <option value="Évolutions">Évolutions</option>
+                    <option value="EX Créateurs de légendes">EX Créateurs de légendes</option>
+                    <option value="EX Deoxys">EX Deoxys</option>
+                    <option value="EX Dragon">EX Dragon</option>
+                    <option value="EX Espèces Delta">EX Espèces Delta</option>
+                    <option value="EX Fantômes Holon">EX Fantômes Holon</option>
+                    <option value="EX Forces Cachées">EX Forces Cachées</option>
+                    <option value="EX Gardiens de Cristal">EX Gardiens de Cristal</option>
+                    <option value="EX Gardiens du Pouvoir">EX Gardiens du Pouvoir</option>
+                    <option value="EX Légendes Oubliées">EX Légendes Oubliées</option>
+                    <option value="EX Rouge Feu & Vert Feuille">EX Rouge Feu & Vert Feuille</option>
+                    <option value="EX Rubis & Saphir">EX Rubis & Saphir</option>
+                    <option value="EX Team Magma vs Team Aqua">EX Team Magma vs Team Aqua</option>
+                    <option value="EX Tempête de sable">EX Tempête de sable</option>
+                    <option value="EX Émeraude">EX Émeraude</option>
+                    <option value="EX Île des Dragons">EX Île des Dragons</option>
+                    <option value="Expedition">Expedition</option>
+                    <option value="Explorateurs Obscurs">Explorateurs Obscurs</option>
+                    <option value="Explosion Plasma">Explosion Plasma</option>
+                    <option value="Faille Paradoxe">Faille Paradoxe</option>
+                    <option value="Flammes Obsidiennes">Flammes Obsidiennes</option>
+                    <option value="Fossile">Fossile</option>
+                    <option value="Frontières Franchies">Frontières Franchies</option>
+                    <option value="Gardiens Ascendants">Gardiens Ascendants</option>
+                    <option value="Glaciation Plasma">Glaciation Plasma</option>
+                    <option value="Générations">Générations</option>
+                    <option value="Harmonie des Esprits">Harmonie des Esprits</option>
+                    <option value="HeartGold SoulSilver">HeartGold SoulSilver</option>
+                    <option value="Impact des Destins">Impact des Destins</option>
+                    <option value="Impulsion Turbo">Impulsion Turbo</option>
+                    <option value="Indomptable">Indomptable</option>
+                    <option value="Invasion Carmin">Invasion Carmin</option>
+                    <option value="Jungle">Jungle</option>
+                    <option value="L'appel des Légendes">L'appel des Légendes</option>
+                    <option value="La Voie du Maître">La Voie du Maître</option>
+                    <option value="Lumière Interdite">Lumière Interdite</option>
+                    <option value="Merveilles Secrètes">Merveilles Secrètes</option>
+                    <option value="Neo Destiny">Neo Destiny</option>
+                    <option value="Neo Discovery">Neo Discovery</option>
+                    <option value="Neo Genesis">Neo Genesis</option>
+                    <option value="Neo Revelation">Neo Revelation</option>
+                    <option value="Nobles Victoires">Nobles Victoires</option>
+                    <option value="Noir & Blanc">Noir & Blanc</option>
+                    <option value="Offensive Vapeur">Offensive Vapeur</option>
+                    <option value="Ombres Ardentes">Ombres Ardentes</option>
+                    <option value="Origine Perdue">Origine Perdue</option>
+                    <option value="Origines Antiques">Origines Antiques</option>
+                    <option value="POP Série 1">POP Série 1</option>
+                    <option value="POP Série 2">POP Série 2</option>
+                    <option value="POP Série 3">POP Série 3</option>
+                    <option value="POP Série 4">POP Série 4</option>
+                    <option value="POP Série 7">POP Série 7</option>
+                    <option value="POP Série 9">POP Série 9</option>
+                    <option value="Platine Platine">Platine Platine</option>
+                    <option value="Platine">Platine</option>
+                    <option value="Poing de Fusion">Poing de Fusion</option>
+                    <option value="Poings Furieux">Poings Furieux</option>
+                    <option value="Pokémon GO">Pokémon GO</option>
+                    <option value="Pouvoirs Émergents">Pouvoirs Émergents</option>
+                    <option value="Primo-Choc">Primo-Choc</option>
+                    <option value="Promo BW">Promo BW</option>
+                    <option value="Promo DP">Promo DP</option>
+                    <option value="Promo SM">Promo SM</option>
+                    <option value="Promo SWSH">Promo SWSH</option>
+                    <option value="Promo XY">Promo XY</option>
+                    <option value="Rivaux Émergeants">Rivaux Émergeants</option>
+                    <option value="Rupture Turbo">Rupture Turbo</option>
+                    <option value="Règne de Glace">Règne de Glace</option>
+                    <option value="Set de Base">Set de Base</option>
+                    <option value="Soleil et Lune">Soleil et Lune</option>
+                    <option value="Stars Étincelantes">Stars Étincelantes</option>
+                    <option value="Styles de combat">Styles de combat</option>
+                    <option value="Team Rocket">Team Rocket</option>
+                    <option value="Tempète Plasma">Tempète Plasma</option>
+                    <option value="Tempête Argentée">Tempête Argentée</option>
+                    <option value="Tempête Céleste">Tempête Céleste</option>
+                    <option value="Tempête">Tempête</option>
+                    <option value="Tonnerre Perdu">Tonnerre Perdu</option>
+                    <option value="Triomphant">Triomphant</option>
+                    <option value="Trésors Mystérieux">Trésors Mystérieux</option>
+                    <option value="Ténèbres Embrasées">Ténèbres Embrasées</option>
+                    <option value="Ultra-Prisme">Ultra-Prisme</option>
+                    <option value="Vainqueurs Suprêmes">Vainqueurs Suprêmes</option>
+                    <option value="Vigueur Spectrale">Vigueur Spectrale</option>
+                    <option value="Voltage Éclatant">Voltage Éclatant</option>
+                    <option value="Wizards Black Star Promos">Wizards Black Star Promos</option>
+                    <option value="XY">XY</option>
+                    <option value="Zénith Suprême">Zénith Suprême</option>
+                </datalist>
+            </label>
+
+            <label>
+                <h4> </h4>
+                <button id="validate" class="form-control" @onclick="SearchButton">Rechercher</button>
+            </label>
+        </div>
+        <div class="Pokedex">
+            <img id="Pokedex" src="images/Pokedex.png" alt="Pokedex">
+
+            <div class="container">
+                <div class="row">
+                    @foreach (var pokémon in pokémons)
+                    {
+                        <div class="col-md-3 col-sm-6">
+                            <CardItem pokémon="@pokémon" OnlyDeletable="OnlyDeletable" Deleter="OnDelete" />
+                        </div>
+                    }
+                </div>
+
+                @if (pokémons.Count == 0)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        Aucun résultat
+                    </div>
+                }
+                else if (pokémons.Count % PageSize == 0)
+                {
+                    <button class="btn btn-primary" @onclick="SearchButton">
+                        <span class="bi bi-search" aria-hidden="true"></span>
+                        Charger plus
+                    </button>
+                }
+            </div>
+
+
+            <button class="btn btn-primary btn-scrollup" onclick="ScrollUp()">
+                <span class="bi bi-arrow-up" aria-hidden="true"></span>
+            </button>
+
+
+            <script>
+                function ScrollUp() {
+                    document.body.scrollTop = 0; // For Safari
+                    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+                }
+            </script>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@code {
+    [Parameter] public required Func<string, Task<IEnumerable<Pokémon>?>> Searcher { get; set; }
+    [Parameter] public required bool OnlyDeletable { get; set; } = false;
+
+    public List<Pokémon> pokémons = new();
+
+    public string? Name { get; set; }
+    public string Category { get; set; } = "";
+    public string Type1 { get; set; } = "Tous";
+    public string Type2 { get; set; } = "Tous";
+    public string? Set { get; set; }
+
+    public async Task SetName(ChangeEventArgs e)
+    {
+        Name = e.Value?.ToString();
+        await Search(true);
+    }
+
+    public async Task SetCategory(string s)
+    {
+        Category = s;
+        await Search(true);
+    }
+
+    public async Task SetType1(string s)
+    {
+        Type1 = s;
+        await Search(true);
+    }
+
+    public async Task SetType2(string s)
+    {
+        Type2 = s;
+        await Search(true);
+    }
+
+    public async Task SetSet(ChangeEventArgs e)
+    {
+        Set = e.Value?.ToString();
+        await Search(true);
+    }
+
+
+    public int Page { get; set; } = 0;
+    public int PageSize { get; set; } = 48; // n * row size
+    private int? lastHash { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Search();
+    }
+
+    public async Task SearchButton()
+    {
+        await Search();
+    }
+
+    public async Task Search(bool reset = false)
+    {
+        var h = Name?.GetHashCode() + Category?.GetHashCode() + Type1?.GetHashCode() + Type2?.GetHashCode() + Set?.GetHashCode();
+        bool clear = reset || h != lastHash;
+
+        if (clear)
+        {
+            Page = 0; // if research terms change, reset page
+            lastHash = h;
+        }
+
+        StringBuilder s = new("?");
+        if (!string.IsNullOrEmpty(Name)) s.Append($"name={Name}&");
+        if (!string.IsNullOrEmpty(Category)) s.Append($"category={Category}&");
+        if (!string.IsNullOrEmpty(Type1) && Type1 != "Tous") s.Append($"type1={Type1}&");
+        if (!string.IsNullOrEmpty(Type2) && Type2 != "Tous") s.Append($"type2={Type2}&");
+        if (!string.IsNullOrEmpty(Set)) s.Append($"set={Set}&");
+
+        s.Append($"offset={Page++ * PageSize}&limit={PageSize}");
+
+
+        var pk = await Searcher(s.ToString());
+
+        if (pk is not null)
+        {
+
+            if (clear)
+            {
+                // check if items in list are the same -> avoid UI flashing when searching if results are the same
+                if (pokémons.Count == pk.Count())
+                {
+                    bool same = true;
+                    for (int i = 0; i < pokémons.Count; i++)
+                    {
+                        if (pokémons[i].Id != pk.ElementAt(i).Id)
+                        {
+                            same = false;
+                            break;
+                        }
+                    }
+
+                    if (same) return;
+                }
+                pokémons.Clear();
+            }
+
+            pokémons.AddRange(pk);
+        }
+    }
+
+    public async Task OnDelete(Pokémon pokémon)
+    {
+        pokémons.Remove(pokémon);
+        StateHasChanged();
+    }
+}
+

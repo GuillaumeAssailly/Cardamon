@@ -1,0 +1,80 @@
+@page "/login"
+@inject ILogger<Login> Logger
+@inject NavigationManager NavigationManager
+@inject UserService userService
+@inject AuthenticationStateProvider authStateProvider
+@using Front.Entities;
+@using Front.Components.Widget;
+
+<PageTitle>Login</PageTitle>
+
+<link rel="stylesheet" href="style.css" />
+
+<div class="titleBanner">
+    <img src="images/Connexion.png" alt="Connection Image">
+</div>
+<div class="centrer">
+    <div class="form-vertical">
+        <EditForm Model="@userLogin" OnValidSubmit="HandleLogin">
+            <label class="form-label">
+                Email ou pseudo
+                <input @bind-value="userLogin.UsernameOrEmail" placeholder="Sacha" class="@(String.IsNullOrEmpty(errorMessage) ? "form-control": "form-control is-invalid")"/>
+            </label>
+            <label class="form-label">
+                Mot de passe
+                <input id="Pwd" @bind-value="userLogin.Pass" type="password" placeholder="Mot de passe" class="@(String.IsNullOrEmpty(errorMessage) ? "form-control": "form-control is-invalid")" />
+                @if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <div id="PwdFeedback" class="invalid-feedback">
+                        @errorMessage
+                    </div>
+                }
+            </label>
+
+
+            <p><br /></p>
+
+            <Captcha Check="CCheck"></Captcha>
+
+            <p><br /></p>
+
+            <button class="btn @(Valid ? "btn-success": "btn-outline-success")" type="submit" disabled="@(!Valid)">Se connecter</button>
+
+            <p class="text-center"><br />Pas encore de compte ? <a href="/register">En créer un ici !</a></p>
+
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private UserLogin userLogin = new UserLogin() { UsernameOrEmail = "", Pass = "" };
+    private string errorMessage = "";
+    private bool CChecked = false;
+
+    public bool Valid
+	{
+		get
+		{
+            return !String.IsNullOrEmpty(userLogin.UsernameOrEmail) && !String.IsNullOrEmpty(userLogin.Pass) && CChecked;
+		}
+	}
+
+    private async void HandleLogin()
+    {
+        var user = await userService.AuthenticateUser(userLogin);
+        if (user != null)
+        {
+            var userClaim = await ((CustomAuthenticationStateProvider)authStateProvider).MarkUserAsAuthenticated(user);
+
+            NavigationManager.NavigateTo("/");
+        }
+        else errorMessage = "Echec de la connexion, veuillez verifier vos identifiants.";
+        StateHasChanged();
+    }
+
+    public void CCheck()
+    {
+        CChecked = true;
+        StateHasChanged();
+    }
+}

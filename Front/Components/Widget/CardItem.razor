@@ -1,0 +1,92 @@
+﻿@inject NavigationManager NavigationManager
+@inject PokémonService pokémonService
+@using Front.Entities;
+
+<div class="card mb-4 rounded-3 bg-dark">
+	<div class="item-card-container bg-dark rounded-3">
+		<div class="item-card-image bg-dark rounded-3">
+			<a href="/pokémon/@(pokémon.Id)">
+				<img src="@(url)" class="bg-dark rounded-3 img-fluid mx-auto d-block @(loading ? "item-card-image-blur": "")" alt="@(pokémon.Name)" @onload="Loaded" />
+			</a>
+		</div>
+		<div class="item-card-spinner">
+			@if (loading)
+			{
+				<div class="spinner-border text-primary" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			}
+		</div>
+
+		<AuthorizeView Roles="User">
+			<Authorized>
+				@if (!loading)
+				{
+					<div class="item-card-button">
+						@if (pokémon.Possessed)
+						{
+							<button class="btn btn-danger" @onclick="OnDelete">
+								<span class="bi bi-trash" aria-hidden="true"></span>
+							</button>
+						}
+						else
+						{
+							<button class="btn btn-success card-image-blur" @onclick="OnAdd">
+								<span class="bi bi-plus" aria-hidden="true"></span>
+							</button>
+						}
+					</div>
+				}
+				
+			</Authorized>
+		</AuthorizeView>
+
+	</div>
+</div>
+
+
+@code {
+	[Parameter] public required Pokémon pokémon {
+		get { return _pk; }
+		set { Loading(value); _pk = value; }
+	}
+	[Parameter] public required bool OnlyDeletable { get; set; } = false;
+	[Parameter] public Func<Pokémon, Task>? Deleter { get; set; }
+
+	static int count = 0;
+
+	private int id;
+	public required Pokémon _pk;
+	public bool loading = false;
+	public string url = "";
+
+	public void Loading(Pokémon pk)
+	{
+		loading = _pk?.Image != pk.Image;
+		if (loading) {
+			url = pk.Image;
+		}
+	}
+
+	public void Loaded()
+	{
+		url = pokémon.Image;
+		loading = false;
+	}
+
+	protected override void OnInitialized()
+	{
+		id = count++;
+	}
+
+	public async Task OnAdd()
+	{
+		if(await pokémonService.AddCard(pokémon.Id)) pokémon.Possessed = true;
+	}
+
+	public async Task OnDelete()
+	{
+		if (await pokémonService.DeleteCard(pokémon.Id)) pokémon.Possessed = false;
+		if (OnlyDeletable && Deleter is not null) await Deleter(pokémon);
+	}
+}

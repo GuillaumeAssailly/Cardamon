@@ -1,0 +1,225 @@
+﻿@page "/pokémon/{id}"
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider authStateProvider
+@inject PokémonService pokémonService
+@using System.Security.Claims;
+@using System.Text;
+@using Front.Components.Widget;
+@using Front.Entities;
+@using Microsoft.AspNetCore.WebUtilities;
+
+@if (pokémon is not null)
+{
+	<PageTitle>@(pokémon.Name)</PageTitle>
+
+	
+
+	<div class="card_mb-4">
+		<div class="side">
+			<h1>@(pokémon.Name)</h1>
+			<div class="card_image">
+				<img src="@(pokémon.Image)" class="img-fluid rounded mx-auto d-block" id="Image_cardParent__goN_k" alt="@(pokémon.Name)" @onload="Loaded" />
+				@if (loading)
+				{
+					<div class="spinner-border text-primary" role="status">
+						<span class="visually-hidden">Loading...</span>
+					</div>
+				}
+			</div>
+			<div class="add_or_connect">
+				<AuthorizeView Roles="User">
+					<Authorized>
+						@if (pokémon.Possessed)
+						{
+							<button type="button" class="btn btn-outline-danger" @onclick="OnDelete">
+								<span class="bi bi-trash" aria-hidden="true"></span> Supprimer de ma collection
+							</button>
+						}
+						else
+						{
+							<button type="button" class="btn btn-success" @onclick="OnAdd">
+								<span class="bi bi-plus-square" aria-hidden="true"></span> Ajouter à ma collection
+							</button>
+						}
+					</Authorized>
+					<NotAuthorized>
+						<button type="button" class="btn btn-primary" @onclick="OnLogin">
+							<span class="bi bi-person" aria-hidden="true"></span> Se connecter
+						</button>
+					</NotAuthorized>
+				</AuthorizeView>
+			</div>
+		</div>
+		<div class="main">
+			<div class="card-body">
+				<div class="card_mb-4">
+					<div class="side">
+						<h3 class="card-title">@pokémon.Name</h3>
+						<p class="card-text">@pokémon.Description</p>
+						<p class="card-text">Stade : @pokémon.Stage</p>
+						@if (@pokémon.EvolveFrom != null)
+						{
+							<p class="card-text">Evolution de @pokémon.EvolveFrom</p>
+						}
+						<p class="card-text">Points de vie : @pokémon.Hp</p>
+						<p class="card-text">Points de retraite : @pokémon.Retreat</p>
+						<p class="card-text">Set @pokémon.Set</p>
+					</div>
+					<div class="main">
+						<img src="@(pokémon.SetImage)" class="set_image" alt="@(pokémon.Set)" />
+					</div>
+				</div>
+
+				<p class="card-text">Effet: @pokémon.Effect</p>
+					
+
+				@if (@pokémon.TypesArray != null)
+				{
+					<p class="card-text">
+						Type
+						@foreach (var type in pokémon.TypesArray)
+						{
+							<span class="energy @pokémonService.GetTypeClass(type)"></span>
+							<span class="badge bg-primary">@type</span>
+						}
+					</p>
+				}
+
+				@if (@pokémon.Item != null)
+				{
+					<p class="card-text">Objet : @pokémon.Item.Name
+						@pokémon.Item.Effect
+					</p>
+				}
+		
+				@if (pokémon.Resistances != null && pokémon.Resistances.Count > 0)
+				{
+					<p class="card-text">
+						Résistances
+						@foreach (var res in pokémon.Resistances)
+						{
+							<span class="energy @pokémonService.GetTypeClass(res.Type)"></span>
+							<span class="badge bg-primary">@res.Value</span>
+						}
+					</p>
+				}
+
+				@if (pokémon.Weaknesses != null && pokémon.Weaknesses.Count > 0)
+				{
+					<p class="card-text">
+						Faiblesses
+						@foreach (var weak in pokémon.Weaknesses)
+						{
+							<span class="energy @pokémonService.GetTypeClass(weak.Type)"></span>
+							<span class="badge bg-primary">@weak.Value</span>
+						}
+					</p>
+				}
+
+				@if (pokémon.Abilities != null && pokémon.Abilities.Count > 0)
+				{
+					<p class="card-text">
+						Capacités
+						@foreach (var abi in pokémon.Abilities)
+						{
+							<span class="badge bg-primary">@abi.Name</span>
+							<span class="energy @pokémonService.GetTypeClass(abi.Type)"></span>
+							<span class="badge bg-primary">@abi.Effect</span>
+						}
+					</p>
+				}
+
+				@if (pokémon.Attacks != null && pokémon.Attacks.Count > 0)
+				{
+					<p class="card-text">
+						Attaques
+						<br />
+						@foreach (var att in pokémon.Attacks)
+						{
+							<span class="badge bg-primary">@att.Name</span>
+
+							@if (att.Damage != null)
+							{
+								<span class="badge bg-primary">@att.Damage</span>
+							}
+
+							@if (att.Costs != null)
+							{
+								@foreach (var type in att.Costs)
+								{
+									<span class="energy @pokémonService.GetTypeClass(type)"></span>
+								}
+							}
+							<br />
+
+							@if (att.Effect != null)
+							{
+								<span class="badge bg-primary">@att.Effect</span>
+							}
+							<br/>
+							<br/>
+						}
+					</p>
+				}
+
+				<p class="card-text">Numéro : @pokémon.LocalId / @pokémon.Total</p>
+				<p class="card-text">Rareté : @pokémon.Rarity</p>
+				<p class="card-text">Illustrateur: @pokémon.Illustrator</p>
+			</div>
+		</div>
+	</div>
+}
+
+
+@code {
+	[Parameter] public string? id { get; set; }
+
+	public Pokémon? pokémon {
+		get { return _pk; }
+		set { Loading(value); _pk = value; }
+	}
+
+	public Pokémon? _pk;
+	private bool loading = false;
+
+	public void Loading(Pokémon? pk)
+	{
+		loading = pk != null && _pk?.Image != pk.Image;
+	}
+
+	public void Loaded()
+	{
+		loading = false;
+	}
+
+	public void OnGet(string? id = null)
+	{
+		this.id = id;
+	}
+
+	public async Task OnAdd()
+	{
+		if (pokémon is not null && await pokémonService.AddCard(pokémon.Id)) pokémon.Possessed = true;
+	}
+
+	public async Task OnDelete()
+	{
+		if (pokémon is not null && await pokémonService.DeleteCard(pokémon.Id)) pokémon.Possessed = false;
+	}
+
+	public void OnLogin()
+	{
+		NavigationManager.NavigateTo("/login");
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (id != null) {
+			pokémon = await pokémonService.GetPokémon(id);
+		}
+
+		if (pokémon is null) { // if the pokémon is not found, redirect to search page
+			NavigationManager.NavigateTo("/search");
+		}
+	}
+}

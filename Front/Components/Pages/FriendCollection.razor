@@ -1,0 +1,94 @@
+﻿@page "/friend"
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider authStateProvider
+@inject PokémonService pokémonService
+@using System.Security.Claims;
+@using Front.Entities;
+@using Front.Components.Widget;
+@using Microsoft.AspNetCore.WebUtilities
+
+
+@if (username != null)
+{
+	<PageTitle>Collection de @(username)</PageTitle>
+
+	<div class="titleBanner">
+		<img src="images/Collection.png" alt="Collection Image">
+	</div>
+
+	<SearchGrid Searcher="Searcher"/>
+}
+else
+{
+	<PageTitle>Collection d'Amis</PageTitle>
+	<div class="titleBanner">
+		<img src="images/Collections.png" alt="Collections Image">
+	</div>
+	
+<div class="centrer">
+	<div class="form-vertical">
+		<h2> Découvre les collections de tes amis !</h2>
+
+		<p><br /></p>
+
+		<label class="form-label">
+			Entre leurs pseudo
+			<input @bind-value="Pseudo" class="form-control @(Error ? "is-invalid": "")" placeholder="TheRed" />
+			@if (Error)
+			{
+				<p class="invalid-feedback">Pseudo non trouvé</p>
+			}
+		</label>
+
+		<button type="button" class="btn btn-primary" @onclick="OnSearch">
+			<span class="bi bi-person" aria-hidden="true"></span> Chercher
+		</button>
+	</div>
+</div>
+}
+
+
+
+@code {
+	public string? username { get; set; }
+
+	private string Pseudo { get; set; } = "";
+
+	private bool Error { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+		var query = QueryHelpers.ParseQuery(uri.Query);
+		if (query.TryGetValue("username", out var username))
+		{
+			string? un = username;
+			if (un != null)
+			{
+				if (await pokémonService.IsExists(un))
+				{
+					this.username = un;
+					return;
+				}
+				else
+				{
+					Pseudo = un;
+					Error = true;
+				}
+			}
+		}
+	
+	}
+
+	public async Task OnSearch()
+	{
+		Error = false;
+		if (await pokémonService.IsExists(Pseudo)) username = Pseudo;
+		else Error = true;
+	}
+
+    public async Task<IEnumerable<Pokémon>?> Searcher(string query)
+    {
+        return await pokémonService.GetCollection(query, username);
+    }
+}
