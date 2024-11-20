@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using PokéService.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Common.PokéEntities;
 
 namespace PokéService.Data
 {
@@ -11,8 +7,7 @@ namespace PokéService.Data
     {
         public PokéServiceContext(DbContextOptions<PokéServiceContext> options)
             : base(options)
-        {
-        }
+        {}
 
         public DbSet<Pokémon> Pokémon { get; set; } = default!;
         public DbSet<CardsCollection> CardsCollection { get; set; } = default!;

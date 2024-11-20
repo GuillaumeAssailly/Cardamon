@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokéService.Data;
-using PokéService.Entities;
-using System.Security.Cryptography;
+using Common.PokéEntities;
 
 namespace PokéService.Controllers
 {

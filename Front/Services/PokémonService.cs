@@ -1,10 +1,4 @@
-﻿using Front.Entities;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
-using System.Net.Http.Headers;
-using System.Security.Claims;
+﻿using Common.PokéEntities;
 
 
 namespace Front.Services

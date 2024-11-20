@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Newtonsoft.Json;
 using PokéService.Data;
-using PokéService.Entities;
+using Common.PokéEntities;
 
 #nullable disable
 

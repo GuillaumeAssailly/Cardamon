@@ -1,11 +1,4 @@
-﻿using Front.Entities;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
-using static Front.Components.Pages.Register;
-using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Components.Authorization;
+﻿using Common.UserEntities;
 
 
 namespace Front.Services

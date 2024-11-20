@@ -1,4 +1,4 @@
-﻿using Front.Entities;
+﻿using Common.UserEntities;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Headers;
 

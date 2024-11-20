@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using UserService.Data;
-using UserService.Entities;
+using Common.UserEntities;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<UserServiceContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("UserServiceContext") ?? throw new InvalidOperationException("Connection string 'UserServiceContext' not found.")));

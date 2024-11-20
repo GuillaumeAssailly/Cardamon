@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Front", "Front\Front.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokéService", "PokéService\PokéService.csproj", "{AC848EDD-2C27-41E4-9ED4-1A71B820FCBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{48601C2A-A799-44C5-B9DE-9F1744651D61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{AC848EDD-2C27-41E4-9ED4-1A71B820FCBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC848EDD-2C27-41E4-9ED4-1A71B820FCBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC848EDD-2C27-41E4-9ED4-1A71B820FCBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48601C2A-A799-44C5-B9DE-9F1744651D61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48601C2A-A799-44C5-B9DE-9F1744651D61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48601C2A-A799-44C5-B9DE-9F1744651D61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48601C2A-A799-44C5-B9DE-9F1744651D61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

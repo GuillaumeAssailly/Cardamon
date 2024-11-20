@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using UserService.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Common.UserEntities;
 
 namespace UserService.Data
 {
@@ -11,8 +7,7 @@ namespace UserService.Data
     {
         public UserServiceContext (DbContextOptions<UserServiceContext> options)
             : base(options)
-        {
-        }
+        {}
 
         public DbSet<User> User { get; set; } = default!;
     }

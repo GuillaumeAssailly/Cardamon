@@ -1,10 +1,8 @@
-﻿using Front.Entities;
+﻿using Common.UserEntities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using System.Security.Claims;
-using System.Security.Principal;
-using static Front.Services.CustomAuthenticationStateProvider;
 
 namespace Front.Services
 {
