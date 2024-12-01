@@ -95,13 +95,14 @@
 
 			<button class="btn @(Valid ? "btn-success": "btn-outline-success")" type="submit" disabled="@(!Valid)">S'inscrire</button>
 			
-			<p class="text-center"><br />Vous avez déjà un compte ? <a href="/login">Connectez-vous ici !</a></p>
+			<p class="text-center"><br />Vous avez déjà un compte ? <a href="/login@(new Uri(Navigation.Uri).Query)">Connectez-vous ici !</a></p>
 
 		</EditForm>
 	</div>
 </div>
 
 @code {
+	[Inject] private NavigationManager Navigation { get; set; }
 	[Parameter] public string Redirect { get; set; } = "/";
 
 	private string? ErrorEmail, ErrorConfirmPassword, ErrorPassword, ErrorUsername, ErrorFirstName, ErrorLastName, ErrorBirthDate;
@@ -232,7 +233,7 @@
 	private async void HandleRegister()
 	{
 		var msg = await userService.CreateUser(userCreate);
-		if (String.IsNullOrEmpty(msg)) NavigationManager.NavigateTo("/login");
+		if (String.IsNullOrEmpty(msg)) NavigationManager.NavigateTo($"/login{new Uri(Navigation.Uri).Query}");
 		else
 		{
 			errorMessage = msg;

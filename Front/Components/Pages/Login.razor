@@ -40,24 +40,25 @@
 
             <button class="btn @(Valid ? "btn-success": "btn-outline-success")" type="submit" disabled="@(!Valid)">Se connecter</button>
 
-            <p class="text-center"><br />Pas encore de compte ? <a href="/register">En créer un ici !</a></p>
+            <p class="text-center"><br />Pas encore de compte ? <a href="/register@(new Uri(Navigation.Uri).Query)">En créer un ici !</a></p>
 
         </EditForm>
     </div>
 </div>
 
 @code {
+    [Inject] private NavigationManager Navigation { get; set; }
     private UserLogin userLogin = new UserLogin() { UsernameOrEmail = "", Pass = "" };
     private string errorMessage = "";
     private bool CChecked = false;
 
     public bool Valid
-	{
-		get
-		{
+    {
+        get
+        {
             return !String.IsNullOrEmpty(userLogin.UsernameOrEmail) && !String.IsNullOrEmpty(userLogin.Pass) && CChecked;
-		}
-	}
+        }
+    }
 
     private async void HandleLogin()
     {
@@ -66,7 +67,16 @@
         {
             var userClaim = await ((CustomAuthenticationStateProvider)authStateProvider).MarkUserAsAuthenticated(user);
 
-            NavigationManager.NavigateTo("/");
+            var uri = new Uri(Navigation.Uri);
+            var queries = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+            if (queries.ContainsKey("dst"))
+            {
+                NavigationManager.NavigateTo(queries["dst"]!);
+            } 
+            else
+            {
+                NavigationManager.NavigateTo("/");
+            }
         }
         else errorMessage = "Echec de la connexion, veuillez verifier vos identifiants.";
         StateHasChanged();

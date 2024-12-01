@@ -2,10 +2,12 @@
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider authStateProvider
 @inject PokémonService pokémonService
+@inject PriceService priceService
 @using System.Security.Claims;
 @using System.Text;
 @using Front.Components.Widget;
 @using Common.PokéEntities;
+@using Common.PriceEntities;
 @using Microsoft.AspNetCore.WebUtilities;
 
 @if (pokémon is not null)
@@ -165,6 +167,21 @@
 				<p class="card-text">Numéro : @pokémon.LocalId / @pokémon.Total</p>
 				<p class="card-text">Rareté : @pokémon.Rarity</p>
 				<p class="card-text">Illustrateur: @pokémon.Illustrator</p>
+
+				@if (price != null)
+				{
+					@if (price.CardMarketPrice != null)
+					{
+						string priceStr = String.Format(new System.Globalization.CultureInfo("fr-FR"), "{0:C}", price.CardMarketPrice);
+						<p class="card-text">
+							Prix sur <NavLink href="@price.CardMarketUrl">Card Market</NavLink> : @priceStr</p>
+					}
+					@if (price.TCGPlayerPrice != null)
+					{
+						string priceStr = String.Format(new System.Globalization.CultureInfo("fr-FR"), "{0:C}", price.TCGPlayerPrice);
+						<p class="card-text">Prix sur <NavLink href="@price.TCGPlayerUrl">TCG Player</NavLink> : @priceStr</p>
+					}
+				}
 			</div>
 		</div>
 	</div>
@@ -172,8 +189,10 @@
 
 
 @code {
+	[Inject] private NavigationManager Navigation { get; set; }
 	[Parameter] public string? id { get; set; }
 
+	public Price? price { get; set; }
 	public Pokémon? pokémon {
 		get { return _pk; }
 		set { Loading(value); _pk = value; }
@@ -209,13 +228,15 @@
 
 	public void OnLogin()
 	{
-		NavigationManager.NavigateTo("/login");
+		var uri = new Uri(Navigation.Uri);
+		NavigationManager.NavigateTo($"/login?dst={uri.AbsolutePath}");
 	}
 
 	protected override async Task OnInitializedAsync()
 	{
 		if (id != null) {
 			pokémon = await pokémonService.GetPokémon(id);
+			price = await priceService.GetPrice(id);
 		}
 
 		if (pokémon is null) { // if the pokémon is not found, redirect to search page

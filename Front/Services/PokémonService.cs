@@ -74,7 +74,7 @@ namespace Front.Services
 
         public string[] GetTypes()
         {
-            return new string[] { "Tous", "Incolore", "Plante", "Eau", "Feu", "Électrique", "Métal", "Psy", "Combat", "Obscurité", "Dragon", "Fée" };
+            return ["Tous", "Incolore", "Plante", "Eau", "Feu", "Électrique", "Métal", "Psy", "Combat", "Obscurité", "Dragon", "Fée"];
         }
 
         public string GetTypeClass(string type)
@@ -100,7 +100,7 @@ namespace Front.Services
         // may be improved...
         public string[] GetCategories()
         {
-            return new string[] { "Toutes les cartes", "Cartes Pokémon", "Cartes Énergies", "Cartes Dresseurs" };
+            return ["Toutes les cartes", "Cartes Pokémon", "Cartes Énergies", "Cartes Dresseurs"];
         }
 
         public string GetCategoryClass(string cat)

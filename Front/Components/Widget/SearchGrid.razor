@@ -236,6 +236,8 @@
 
 
 @code {
+    [Inject] private IJSRuntime JS { get; set; }
+    [Inject] private NavigationManager Navigation { get; set; }
     [Parameter] public required Func<string, Task<IEnumerable<Pokémon>?>> Searcher { get; set; }
     [Parameter] public required bool OnlyDeletable { get; set; } = false;
 
@@ -250,40 +252,72 @@
     public async Task SetName(ChangeEventArgs e)
     {
         Name = e.Value?.ToString();
-        await Search(true);
+        if (!setup) await Search(true);
     }
 
     public async Task SetCategory(string s)
     {
         Category = s;
-        await Search(true);
+        if (!setup) await Search(true);
     }
 
     public async Task SetType1(string s)
     {
         Type1 = s;
-        await Search(true);
+        if (!setup) await Search(true);
     }
 
     public async Task SetType2(string s)
     {
         Type2 = s;
-        await Search(true);
+        if (!setup) await Search(true);
     }
 
     public async Task SetSet(ChangeEventArgs e)
     {
         Set = e.Value?.ToString();
-        await Search(true);
+        if (!setup) await Search(true);
     }
 
 
     public int Page { get; set; } = 0;
     public int PageSize { get; set; } = 48; // n * row size
     private int? lastHash { get; set; }
+    private bool setup { get; set; } = true;
 
     protected override async Task OnInitializedAsync()
     {
+        setup = true;
+
+        var uri = new Uri(Navigation.Uri);
+        var queries = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+
+        if (queries.ContainsKey("name"))
+        {
+            Name = queries["name"];
+        }
+
+        if (queries.ContainsKey("category"))
+        {
+            Category = queries["category"]!;
+        }
+
+        if (queries.ContainsKey("type1"))
+        {
+            Type1 = queries["type1"]!;
+        }
+
+        if (queries.ContainsKey("type2"))
+        {
+            Type2 = queries["type2"]!;
+        }
+
+        if (queries.ContainsKey("set"))
+        {
+            Set = queries["set"]!;
+        }
+
+        setup = false;
         await Search();
     }
 
@@ -310,8 +344,10 @@
         if (!string.IsNullOrEmpty(Type2) && Type2 != "Tous") s.Append($"type2={Type2}&");
         if (!string.IsNullOrEmpty(Set)) s.Append($"set={Set}&");
 
-        s.Append($"offset={Page++ * PageSize}&limit={PageSize}");
+        var uri = new Uri(Navigation.Uri);
+        await JS.InvokeVoidAsync("history.pushState", null, "", uri.AbsolutePath + s.ToString());
 
+        s.Append($"offset={Page++ * PageSize}&limit={PageSize}");
 
         var pk = await Searcher(s.ToString());
 

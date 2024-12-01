@@ -25,6 +25,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<ProtectedLocalStorage>();
 builder.Services.AddScoped<PokémonService>();
+builder.Services.AddScoped<PriceService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
