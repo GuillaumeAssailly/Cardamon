@@ -1,0 +1,89 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@inject UserService userService
+
+
+<div class="page">
+
+    <main class="bg-light">
+        <div class="top-row ">
+            <img class ="navbar_icon"src="images/Cardamon.png" />
+            <nav class="flex-row-navbar">
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="friend" Match="NavLinkMatch.All">
+                        <span class="bi-people icon-center" aria-hidden="true"></span> Amis
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="search" Match="NavLinkMatch.All">
+                        <span class="bi-search icon-center" aria-hidden="true"></span> Rechercher
+                    </NavLink>
+                </div>
+                <AuthorizeView Roles="User">
+                    <Authorized>
+                        <div class="nav-item px-3">
+                            <NavLink class="nav-link" href="collect" Match="NavLinkMatch.All">
+                                <span class="bi-book icon-center" aria-hidden="true"></span> Collection
+                            </NavLink>
+                        </div>
+                        <div class="nav-item px-3">
+                            <NavLink class="nav-link" href="account" Match="NavLinkMatch.All">
+                                <span class="bi-person icon-center" aria-hidden="true"></span> Compte
+                            </NavLink>
+                        </div>
+                    </Authorized>
+                    <NotAuthorized>
+                        <div class="nav-item px-3">
+                            <NavLink class="nav-link" href="register" Match="NavLinkMatch.All">
+                                <span class="bi-pen icon-center" aria-hidden="true"></span> S'inscrire
+                            </NavLink>
+                        </div>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </nav>
+
+            <AuthorizeView>
+                <Authorized>
+                    <div class="top-items">
+                        <p>Salut, @context.User.Identity?.Name !</p>
+                        <button class="connect-button1" @onclick="Logout">Se Déconnecter</button>
+                    </div>
+                </Authorized>
+                <NotAuthorized>
+                    <div class="top-items">
+                        <button class="connect-button2" @onclick="Login">Se Connecter</button>
+                    </div>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+    
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+@code {
+    private async void Logout()
+    {
+        // Kill the session
+        await userService.Logout();
+
+        // Redirect the user to the login page
+        NavigationManager.NavigateTo("/login");
+    }
+
+    private void Login()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+}
+
+

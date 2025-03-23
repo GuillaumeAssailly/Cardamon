@@ -1,0 +1,32 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="captcha">
+	<div class="captcha-spinner">
+		<label>
+			<input type="checkbox" @onclick="OnClick" disabled="@disabled">
+			<span class="checkmark"><span>&nbsp;</span></span>
+		</label>
+	</div>
+	<div class="captcha-text">
+		I'm not a robot
+	</div>
+	<div class="captcha-logo">
+		<img src="https://forum.nox.tv/core/index.php?media/9-recaptcha-png/" />
+		<p>reCAPTCHA</p>
+		<small>Privacy - Terms</small>
+	</div>
+</div>
+
+
+@code {
+	[Parameter] public Action? Check { get; set; }
+
+	private bool disabled = false;
+
+	public async void OnClick()
+	{
+		disabled = true;
+		await Task.Delay(1500);
+		Check?.Invoke();
+	}
+}

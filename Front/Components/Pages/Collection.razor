@@ -1,0 +1,35 @@
+﻿@page "/collect"
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider authStateProvider
+@inject PokémonService pokémonService
+@using System.Security.Claims
+@using Front.Components.Widget
+
+<AuthorizeView Roles="User">
+    <Authorized>
+        <PageTitle>Collection</PageTitle>
+
+
+        <SearchGrid Searcher="Searcher" OnlyDeletable="true" />
+
+
+    </Authorized>
+    <NotAuthorized>
+        <h1>@Redirect</h1>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+    public string Redirect { // redirect to login page if not logged in
+        get {
+            NavigationManager.NavigateTo("/login");
+            return "Redirection...";
+        } 
+    }
+
+    public async Task<IEnumerable<Pokémon>?> Searcher(string query)
+    {
+        return await pokémonService.GetCollection(query);
+    }
+}

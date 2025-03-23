@@ -1,0 +1,22 @@
+﻿@page "/search"
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider authStateProvider
+@inject PokémonService pokémonService
+@using System.Security.Claims
+@using System.Text
+@using Front.Components.Widget
+@using Common.PokéEntities
+
+<link rel="stylesheet" href="style.css" />
+
+<PageTitle>Recherche</PageTitle>
+
+<SearchGrid Searcher="Searcher" />
+
+
+@code {
+	public async Task<IEnumerable<Pokémon>?> Searcher(string query)
+	{
+		return await pokémonService.Search(query);
+	}
+}

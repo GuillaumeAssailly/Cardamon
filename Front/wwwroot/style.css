@@ -1,0 +1,731 @@
+﻿
+body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+    height: 100%;
+    overflow-y: hidden !important;
+}
+
+.pokemon-ball {
+    border: 3px solid white;
+    border-radius: 50%;
+}
+
+.navi {
+    background: #029A81;
+    padding: 20px 40px;
+    font-size: 28px;
+    text-align: right;
+}
+
+    .navi span {
+        margin: 5px 10px 5px 10px;
+    }
+
+        .navi span a {
+            color: white;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-family: 'Oswald', sans-serif;
+        }
+
+#main {
+    background: #32AC97;
+    width: 100%;
+    padding: 40px 0;
+    text-align: center;
+}
+
+    #main h1 {
+        font-family: 'Oswald', sans-serif;
+        font-size: 48px;
+        text-transform: uppercase;
+        color: red;
+    }
+
+    #main p {
+        font-size: 18px;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    #main a {
+        background: #013763;
+        padding: 10px 20px;
+        text-decoration: none;
+        color: white;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+        #main a:hover {
+            background: #9E1908;
+        }
+
+
+#home div {
+    display: inline-block;
+    vertical-align: top;
+    width: 48%;
+}
+
+.aboutImg {
+    text-align: center;
+}
+
+
+h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 36px;
+    text-transform: uppercase;
+    color: #9E1908;
+}
+
+.headerP {
+    color: white;
+    font-size: 12px;
+    width: 80%;
+}
+
+    .headerP a {
+        color: #013763;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+.row {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+#contact {
+    text-align: center;
+}
+
+.header2 {
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    font-size: 36px;
+    color: #013763;
+    margin: 0 0 5px 0;
+}
+
+#contact select {
+    width: 200px;
+    height: 40px;
+    border-radius: 0px;
+}
+
+.goButton {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background: #013763;
+    text-transform: uppercase;
+}
+
+.contactNavi {
+    margin: 80px 0 0 0;
+}
+
+    .contactNavi a {
+        margin: 0 10px;
+    }
+
+.titleBanner {
+    background-color: red;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    border-color: darkblue;
+    border-style: solid;
+    height: 20%;
+}
+
+
+    .titleBanner img {
+        max-width: 100%;
+        height: 100%;
+        display: block;
+        margin: 0 auto;
+    }
+
+
+.form-horizontal {
+    color: black;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid darkblue;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+}
+
+    .form-horizontal label {
+        flex: 1;
+        margin: 0 10px;
+        text-align: left;
+    }
+
+    .form-horizontal button {
+        flex: 1;
+        margin-top: 10px;
+    }
+
+
+
+
+.form-vertical {
+    color: black;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid darkblue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+    max-width: 600px;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+    .form-vertical label {
+        width: 100%;
+        margin: 10px 0;
+        flex-direction: row;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        align-content: center;
+        flex-direction: column;
+        text-align: left;
+    }
+
+    .form-vertical .dropdown {
+        width: 100%;
+    }
+
+    .form-vertical button {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+.form-register {
+    color: black;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid darkblue;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 800px;
+    margin: auto;
+}
+
+.centrer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+
+.full-width {
+    grid-column: span 2;
+    text-align: center;
+}
+
+
+.horizontal-display {
+    color: black;
+    margin-left: 0;
+    margin-right: 0;
+    background-color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 50px;
+    max-width: 600px;
+    margin: 0 auto;
+    border-color: darkblue;
+    border-style: solid;
+    width: 100%;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10%;
+}
+
+#validate {
+    background-color: brown;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+    #validate:hover {
+        background-color: crimson;
+    }
+
+label h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #9E1908;
+    text-align: center;
+    max-width: 100%;
+}
+
+.dropdown h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #9E1908;
+    text-align: center;
+    max-width: 100%;
+}
+
+.dropdown {
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #9E1908;
+    text-align: center;
+    max-width: 100%;
+    margin: auto;
+}
+
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+}
+
+.centrer h1 {
+    width: 100%;
+    flex: 100%;
+}
+
+.SearchGrid {
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+
+#Pokedex {
+    display: block;
+    margin: 0 auto;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+}
+
+/*
+.Formedex {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    width:50%;
+    height:80%;
+}*/
+
+.Formedex {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+
+
+.Pokedex {
+    position: relative;
+    align-content: center;
+    width: 80%;
+}
+
+.container {
+    position: absolute;
+    top: 60%;
+    left: 51%;
+    transform: translate(-52%, -60%);
+    z-index: 0;
+    width: 42%;
+    height: 80%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-color: grey;
+    scrollbar-width: thin;
+}
+
+
+
+.card_mb-4 {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card_imge {
+    width: 100%;
+    align-content: flex-start;
+    margin-right: 10%;
+}
+
+.img-fluid rounded mx-auto d-block {
+    width: 10%;
+    margin-right: 10%;
+}
+
+
+
+.side {
+    flex: 30%;
+    padding: 20px;
+}
+
+
+.main {
+    flex: 70%;
+    padding: 20px;
+}
+
+.side h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 36px;
+    text-transform: uppercase;
+    color: #9E1908;
+    text-align: center;
+}
+
+.side h3 {
+    font-family: 'Oswald', sans-serif;
+    color: brown;
+}
+
+.add_or_connect {
+    text-align: center;
+    padding-top: 5%;
+}
+
+.card-body {
+    margin-top: 5%;
+    padding: 2%;
+    background-color: #302c2c;
+    border: solid;
+    border-radius: 20px;
+}
+
+.set_image {
+    width: 40%;
+    border-radius: 20px;
+    -ms-align-content: inherit;
+    -webkit-align-content: inherit;
+    align-content: inherit;
+}
+
+
+.item-card-container {
+    position: relative;
+    padding-bottom: 137.5%;
+}
+
+.item-card-image, .item-card-spinner {
+    position: absolute;
+}
+
+.item-card-image {
+}
+
+.item-card-image-blur {
+    filter: blur(5px);
+}
+
+.item-card-button::before {
+    background-color: rgba(1, 1, 1, 1);
+    z-index: -1;
+}
+
+.item-card-button::after {
+    background-color: rgba(1, 0, 1, 1);
+}
+
+.item-card-button {
+    position: absolute;
+    right: 5%;
+    bottom: 5%;
+}
+
+.item-card-spinner {
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
+.btn-scrollup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 15px;
+}
+
+
+.connect-button1 {
+    border-radius: 10px;
+    background-color: #ff9b9b;
+}
+
+.connect-button2 {
+    border-radius: 10px;
+    background-color: #aafa84;
+}
+
+.icon-center {
+    font-size: 24px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+
+/* Fake captcha from https://codepen.io/Raybe/pen/LOZdBw */
+.captcha {
+    background-color: #f9f9f9;
+    border: 2px solid #d3d3d3;
+    border-radius: 5px;
+    color: #4c4a4b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+
+.captcha-text {
+    font-size: 1.3em;
+    font-weight: 500;
+    margin-right: 1em;
+}
+
+.captcha-spinner {
+    position: relative;
+    width: 2em;
+    height: 2em;
+    display: flex;
+    margin: 2em 1em;
+    align-items: center;
+    justify-content: center;
+}
+
+input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+}
+
+    input[type="checkbox"] + .checkmark {
+        display: inline-block;
+        width: 2em;
+        height: 2em;
+        background-color: #fcfcfc;
+        border: 2.5px solid #c3c3c3;
+        border-radius: 3px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+        input[type="checkbox"] + .checkmark span {
+            content: '';
+            position: relative; /*
+	position:absolute;
+	border-bottom:3px solid;
+	border-right:3px solid;
+	border-color:#029f56;*/
+            margin-top: -3px;
+            transform: rotate(45deg);
+            width: .75em;
+            height: 1.2em;
+            opacity: 0;
+        }
+
+        input[type="checkbox"] + .checkmark > span:after {
+            content: '';
+            position: absolute;
+            display: block;
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            background-color: #029f56;
+        }
+
+        input[type="checkbox"] + .checkmark > span:before {
+            content: '';
+            position: absolute;
+            display: block;
+            width: 3px;
+            bottom: 0;
+            right: 0;
+            background-color: #029f56;
+        }
+
+    input[type="checkbox"]:checked + .checkmark {
+        animation: 2s spin forwards;
+    }
+
+        input[type="checkbox"]:checked + .checkmark > span {
+            animation: 1s fadein 1.9s forwards;
+        }
+
+            input[type="checkbox"]:checked + .checkmark > span:after {
+                animation: .3s bottomslide 2s forwards;
+            }
+
+            input[type="checkbox"]:checked + .checkmark > span:before {
+                animation: .5s rightslide 2.2s forwards;
+            }
+
+@keyframes fadein {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes bottomslide {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes rightslide {
+    0% {
+        height: 0;
+    }
+
+    100% {
+        height: 100%;
+    }
+}
+
+.captcha-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    align-self: flex-end;
+    margin: 0.5em 1em;
+}
+
+    .captcha-logo img {
+        height: 2em;
+        width: 2em;
+    }
+
+    .captcha-logo p {
+        color: #9d9ba7;
+        margin: 0;
+        font-size: 1em;
+        font-weight: 700;
+        margin: .4em 0 .2em 0;
+    }
+
+    .captcha-logo small {
+        color: #9d9ba7;
+        margin: 0;
+        font-size: .8em;
+    }
+
+@keyframes spin {
+    10% {
+        width: 0;
+        height: 0;
+        border-width: 6px;
+    }
+
+    30% {
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        border-width: 1em;
+        transform: rotate(0deg);
+        border-color: rgb(199,218,245);
+    }
+
+    50% {
+        width: 2em;
+        height: 2em;
+        border-radius: 50%;
+        border-width: 4px;
+        border-color: rgb(199,218,245);
+        border-right-color: rgb(89,152,239);
+    }
+
+    70% {
+        border-width: 4px;
+        border-color: rgb(199,218,245);
+        border-right-color: rgb(89,152,239);
+    }
+
+    90% {
+        border-width: 4px;
+    }
+
+    100% {
+        width: 2em;
+        height: 2em;
+        border-radius: 50%;
+        transform: rotate(720deg);
+        border-color: transparent;
+    }
+}
+
+::selection {
+    background-color: transparent;
+    color: teal;
+}
+
+::-moz-selection {
+    background-color: transparent;
+    color: teal;
+}

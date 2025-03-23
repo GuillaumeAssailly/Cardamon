@@ -1,0 +1,247 @@
+﻿@page "/register"
+@inject ILogger<Register> register
+@inject NavigationManager NavigationManager
+@inject UserService userService
+@inject AuthenticationStateProvider authStateProvider
+@using Common.UserEntities;
+@using Front.Components.Widget;
+
+<PageTitle>Inscription</PageTitle>
+
+
+<div class="centrer">
+	<div class="form-vertical">
+		<EditForm  Model="@userCreate" OnValidSubmit="HandleRegister">
+			<label class="form-label">
+				Nom
+				<input @bind-value="LastName" placeholder="Ketchum" class="@(String.IsNullOrEmpty(ErrorLastName) ? "form-control": "form-control is-invalid")" required />
+				@if (!string.IsNullOrEmpty(ErrorLastName))
+				{
+					<p class="invalid-feedback">@ErrorLastName</p>
+				}
+			</label>
+			<label class="form-label">
+				Prénom
+				<input @bind-value="FirstName" placeholder="Sacha" class="@(String.IsNullOrEmpty(ErrorFirstName) ? "form-control": "form-control is-invalid")" required />
+				@if (!string.IsNullOrEmpty(ErrorFirstName))
+				{
+					<p class="invalid-feedback">@ErrorFirstName</p>
+				}
+			</label>
+			<label class="form-label">
+				Pseudo
+				<input @bind-value="Username" placeholder="NéoRed" class="@(String.IsNullOrEmpty(ErrorUsername) ? "form-control": "form-control is-invalid")" required />
+				@if (!string.IsNullOrEmpty(ErrorUsername))
+				{
+					<p class="invalid-feedback">@ErrorUsername</p>
+				}
+			</label>
+			<label class="form-label">
+				Adresse email
+				<input @bind-value="Email" typeof="email" placeholder="sacha@oak.com" class="@(String.IsNullOrEmpty(ErrorEmail) ? "form-control": "form-control is-invalid")" required />
+				@if (!string.IsNullOrEmpty(ErrorEmail))
+				{
+					<p class="invalid-feedback">@ErrorEmail</p>
+				}
+			</label>
+			<label class="form-label">
+				Date de naissance
+				<input type="date" @bind-value="BirthDate" placeholder="Date de naissance" class="@(String.IsNullOrEmpty(ErrorBirthDate) ? "form-control": "form-control is-invalid")" required />
+				@if (!string.IsNullOrEmpty(ErrorBirthDate))
+				{
+					<p class="invalid-feedback">@ErrorBirthDate</p>
+				}
+			</label>
+			<label class="form-label">
+				Sexe
+				<input class="form-control" @oninput="SetGender" list="datalistOptions" placeholder="Sexe..." required>
+				<datalist id="datalistOptions">
+					@foreach (Gender g in Enum.GetValues(typeof(Gender)))
+					{
+						<option value="@userService.GetGender(g)">@userService.GetGender(g)</option>
+					}
+				</datalist>
+			</label>
+			<label class="form-label">
+				Mot de passe
+				<input @bind-value="Password" type="password" placeholder="Mot de passe" class="@(String.IsNullOrEmpty(ErrorPassword) ? "form-control": "form-control is-invalid")" required />
+				@if (!string.IsNullOrEmpty(ErrorPassword))
+				{
+					<p class="invalid-feedback">@ErrorPassword</p>
+				}
+			</label>
+			<label class="form-label">
+				Confirmation du mot de passe
+				<input @bind-value="ConfirmPassword" type="password" placeholder="Confirmation du mot de passe" class="@(String.IsNullOrEmpty(ErrorConfirmPassword) ? "form-control": "form-control is-invalid")" required />
+				@if (!string.IsNullOrEmpty(ErrorConfirmPassword))
+				{
+					<p class="invalid-feedback">@ErrorConfirmPassword</p>
+				}
+			</label>
+
+			@if (!string.IsNullOrEmpty(errorMessage))
+			{
+				<p class="alert alert-danger">@errorMessage</p>
+			}
+
+			<p><br/></p>
+
+			<Captcha Check="CCheck"></Captcha>
+
+			<p><br/></p>
+
+			<button class="btn @(Valid ? "btn-success": "btn-outline-success")" type="submit" disabled="@(!Valid)">S'inscrire</button>
+			
+			<p class="text-center"><br />Vous avez déjà un compte ? <a href="/login@(new Uri(Navigation.Uri).Query)">Connectez-vous ici !</a></p>
+
+		</EditForm>
+	</div>
+</div>
+
+@code {
+	[Inject] private NavigationManager Navigation { get; set; }
+	[Parameter] public string Redirect { get; set; } = "/";
+
+	private string? ErrorEmail, ErrorConfirmPassword, ErrorPassword, ErrorUsername, ErrorFirstName, ErrorLastName, ErrorBirthDate;
+	private EmailAddressAttribute emailValidationAttribute = new();
+	private string _comfirmPassword = "";
+
+	public bool Valid
+	{
+		get
+		{
+			return String.IsNullOrEmpty(ErrorEmail) && 
+			String.IsNullOrEmpty(ErrorConfirmPassword) && 
+			String.IsNullOrEmpty(ErrorPassword) && 
+			String.IsNullOrEmpty(ErrorFirstName) && 
+			String.IsNullOrEmpty(ErrorLastName) && 
+			String.IsNullOrEmpty(ErrorBirthDate) &&
+			String.IsNullOrEmpty(ErrorUsername) &&
+			!String.IsNullOrEmpty(ConfirmPassword) && 
+			!String.IsNullOrEmpty(Password) && CChecked;
+		}
+	}
+
+	public string Email
+	{
+		get { return userCreate.Email; }
+		set { 
+			userCreate.Email = value;
+			if (emailValidationAttribute.IsValid(value)) ErrorEmail = null;
+			else ErrorEmail = "Format d'email invalide: user@exemple.com";
+		}
+	}
+
+	public string ConfirmPassword
+	{
+		get { return _comfirmPassword; }
+		set { 
+			_comfirmPassword = value;
+			if (value != Password && !String.IsNullOrEmpty(value) && !String.IsNullOrEmpty(Password)) ErrorConfirmPassword = "Les mots de passe ne correspondent pas";
+			else ErrorConfirmPassword = null;
+		}
+	}
+
+	public string Password
+	{
+		get { return userCreate.Password; }
+		set { 
+			userCreate.Password = value;
+			if (value.Length < 8 || value.Length > 40) ErrorPassword = "Le mot de passe doit contenir entre 8 et 40 caractères";
+			else if (!value.Any(c => char.IsDigit(c))) ErrorPassword = "Le mot de passe doit contenir au moins un chiffre";
+			else if(!value.Any(c => char.IsUpper(c))) ErrorPassword = "Le mot de passe doit contenir au moins une majuscule";
+			else if(!value.Any(c => char.IsLower(c))) ErrorPassword = "Le mot de passe doit contenir au moins une minuscule";
+			else if (!value.Any(c => !char.IsLetter(c) && !char.IsDigit(c))) ErrorPassword = "Le mot de passe doit contenir au moins un caractère spécial";
+			else if (value != ConfirmPassword && !String.IsNullOrEmpty(value) && !String.IsNullOrEmpty(ConfirmPassword)) ErrorConfirmPassword = "Les mots de passe ne correspondent pas";
+			else ErrorPassword = null;
+		}
+	}
+
+	public string FirstName
+	{
+		get { return userCreate.FirstName; }
+		set
+		{
+			userCreate.FirstName = value;
+			if (value.Length < 1 || value.Length > 40) ErrorFirstName = "Le prénom doit contenir entre 1 et 40 caractères";
+			else if (value.Any(c => !char.IsLetter(c))) ErrorFirstName = "Le prénom ne doit contenir que des lettres";
+			else ErrorFirstName = null;
+		}
+	}
+
+	public string LastName
+	{
+		get { return userCreate.LastName; }
+		set
+		{
+			userCreate.LastName = value;
+			if (value.Length < 1 || value.Length > 40) ErrorLastName = "Le nom doit contenir entre 1 et 40 caractères";
+			else if (value.Any(c => !char.IsLetter(c))) ErrorLastName = "Le nom ne doit contenir que des lettres";
+			else ErrorLastName = null;
+		}
+	}
+
+	public string Username
+	{
+		get { return userCreate.Username; }
+		set
+		{
+			userCreate.Username = value;
+			if (value.Length < 6 || value.Length > 20) ErrorUsername = "Le pseudo doit contenir entre 6 et 20 caractères";
+			else if (emailValidationAttribute.IsValid(value)) ErrorUsername = "Le pseudo ne peut pas être une adresse email";
+			else ErrorUsername = null;
+		}
+	}
+
+	public DateOnly BirthDate
+	{
+		get { return userCreate.BirthDate; }
+		set
+		{
+			userCreate.BirthDate = value;
+			if (value.Year < 1900 || value.Year > DateTime.Now.Year - 8) ErrorBirthDate = $"L'année de naissance doit être comprise entre 1900 et {DateTime.Now.Year - 8}";
+			else ErrorBirthDate = null;
+		}
+	}
+
+
+	public void SetGender(ChangeEventArgs e)
+	{
+		string? c = e.Value?.ToString();
+		if (c != null)
+			userCreate.Gender = userService.GetValue(c);
+	}
+
+	private UserCreate userCreate = new UserCreate()
+	{
+		Email = "",
+		FirstName = "",
+		LastName = "",
+		Username = "",
+		Password = "",
+		BirthDate = new DateOnly(DateTime.Now.Year - 8, 1, 1),
+		Gender = Gender.Man,
+	};
+
+	private string errorMessage = "";
+	private bool CChecked = false;
+
+
+	private async void HandleRegister()
+	{
+		var msg = await userService.CreateUser(userCreate);
+		if (String.IsNullOrEmpty(msg)) NavigationManager.NavigateTo($"/login{new Uri(Navigation.Uri).Query}");
+		else
+		{
+			errorMessage = msg;
+			Console.WriteLine(msg);
+			StateHasChanged();
+		}
+	}
+
+	public void CCheck()
+	{
+		CChecked = true;
+		StateHasChanged();
+	}
+}
